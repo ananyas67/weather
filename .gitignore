@@ -1,4 +1,5 @@
+.evn/
 node_modules/
 database.db
 out_db.db
-.evn
+
