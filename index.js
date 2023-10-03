@@ -12,6 +12,9 @@ app.use(express.json({ limit: "1mb" }));
 const database = new Datastore("database.db");
 database.loadDatabase();
 
+const out_db = new Datastore("out_db.db");
+out_db.loadDatabase();
+
 app.get("/api", (request, response) => {
   database.find({}, (err, data) => {
       if (err) {
@@ -20,6 +23,23 @@ app.get("/api", (request, response) => {
       }
       response.send(data);
     });
+});
+
+app.get('/out', (request, response) =>{
+  out_db.find({}, (err, data) =>{
+    if(err){
+      response.end();
+      console.log("Something went wrong");
+      return;
+    }
+    response.send(data);
+  });
+});
+
+app.post('/out', (request, response) =>{
+  const data = request.body;
+  out_db.insert(data);
+  response.json(data);
 });
 
 app.post("/api", (request, response) => {
